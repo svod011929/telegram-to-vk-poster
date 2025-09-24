@@ -1,0 +1,22 @@
+[Unit]
+Description=Telegram to VK Poster Service
+After=network-online.target
+
+[Service]
+# Укажите имя пользователя, от которого будет запускаться скрипт
+User=root
+# Укажите группу пользователя
+Group=root
+
+# Укажите АБСОЛЮТНЫЙ путь к папке проекта
+WorkingDirectory=/home/root/telegram-to-vk-poster
+
+# Укажите АБСОЛЮТНЫЙ путь к исполняемому файлу Python в вашем виртуальном окружении
+ExecStart=/home/root/telegram-to-vk-poster/venv/bin/python main.py
+
+# Политика перезапуска
+Restart=on-failure
+RestartSec=10s
+
+[Install]
+WantedBy=multi-user.target

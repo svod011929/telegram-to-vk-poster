@@ -1,0 +1,3 @@
+telethon
+vk_api
+python-dotenv

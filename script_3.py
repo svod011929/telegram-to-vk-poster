@@ -1,0 +1,45 @@
+# Создаем systemd service файл
+systemd_service = """[Unit]
+Description=Telegram to VK Poster Service
+Documentation=https://github.com/svod011929/telegram-to-vk-poster
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=telegram-vk-poster
+Group=telegram-vk-poster
+WorkingDirectory=/opt/telegram-to-vk-poster
+Environment=PATH=/opt/telegram-to-vk-poster/venv/bin
+ExecStart=/opt/telegram-to-vk-poster/venv/bin/python /opt/telegram-to-vk-poster/telegram-to-vk-poster.py
+ExecReload=/bin/kill -HUP $MAINPID
+KillMode=mixed
+Restart=always
+RestartSec=10
+TimeoutStopSec=30
+
+# Безопасность
+NoNewPrivileges=true
+PrivateTmp=true
+ReadWritePaths=/var/log/telegram-to-vk-poster /var/lib/telegram-to-vk-poster /tmp/telegram-to-vk-media
+ProtectSystem=strict
+ProtectHome=true
+
+# Ограничения ресурсов
+LimitNOFILE=65536
+MemoryMax=512M
+CPUQuota=50%
+
+# Логирование
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=telegram-to-vk-poster
+
+[Install]
+WantedBy=multi-user.target
+"""
+
+with open("telegram-to-vk-poster.service", "w", encoding="utf-8") as f:
+    f.write(systemd_service)
+
+print("✅ Создан файл telegram-to-vk-poster.service")
